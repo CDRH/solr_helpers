@@ -20,7 +20,7 @@ module SolrHelpers::Pagination
   #   params: total_pages (int 12), display_range (int 3), params (rails object)
   #   return: giant blob of html like << 1 ... 4, 5, 6 ... 12 >>
   def paginator(total_pages, display_range=3, aParams=params)
-    if total_pages && total_pages > 1
+    if total_pages && total_pages.to_i > 1
       current_page = aParams["page"] ? aParams["page"].to_i : 1
       html = "<nav><ul class='pagination'>"
       html += page_button_previous(current_page, aParams)
