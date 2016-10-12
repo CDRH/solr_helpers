@@ -8,7 +8,7 @@ module SolrHelpers::Faceting
   #   returns: new params object with the qfield / qtext / q query fields removed
   #   NOTE:  This will leave facets intact
   def clear_search(aParams=params)
-    new_params = aParams.clone
+    new_params = aParams.to_hash.clone
     new_params.delete("qfield")
     new_params.delete("qtext")
     new_params.delete("q")
@@ -19,7 +19,7 @@ module SolrHelpers::Faceting
   #   params: facet_type ("novel"), facet ("emma"), params (rails params)
   #   returns: returns params with requested facet and no page
   def facet_link(facet_type, facet, aParams=params)
-    new_params = aParams.clone
+    new_params = aParams.to_hash.clone
     reset_general_params!(new_params)
     new_params[facet_type] = facet
     return new_params
@@ -38,7 +38,7 @@ module SolrHelpers::Faceting
   #   params: facet_type ("novel"), params (rails params)
   #   returns: params without the given facet_type
   def remove_facet(facet_type, aParams=params)
-    new_params = aParams.clone
+    new_params = aParams.to_hash.clone
     reset_general_params!(new_params)
     new_params.delete(facet_type)
     return new_params

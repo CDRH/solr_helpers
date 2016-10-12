@@ -20,12 +20,14 @@ module SolrHelpers::Pagination
   #   params: total_pages (int 12), display_range (int 3), params (rails object)
   #   return: giant blob of html like << 1 ... 4, 5, 6 ... 12 >>
   def paginator(total_pages, display_range=3, aParams=params)
+    new_params = aParams.to_hash.clone
+    new_params.delete("facet.field")
     if total_pages && total_pages.to_i > 1
-      current_page = aParams["page"] ? aParams["page"].to_i : 1
+      current_page = new_params["page"] ? new_params["page"].to_i : 1
       html = "<nav><ul class='pagination'>"
-      html += page_button_previous(current_page, aParams)
-      html += paginator_numbers(total_pages, display_range, aParams)
-      html += page_button_next(current_page, total_pages, aParams)
+      html += page_button_previous(current_page, new_params)
+      html += paginator_numbers(total_pages, display_range, new_params)
+      html += page_button_next(current_page, total_pages, new_params)
       html += "</ul></nav>"
       return html.html_safe
     end
@@ -49,7 +51,7 @@ module SolrHelpers::Pagination
     # add the first page if you're not on it and add dots if it is far from the other pages
     if current_page != 1
       html += "<li>"
-      html += link_to "1", to_page("1") 
+      html += link_to "1", to_page("1", aParams)
       html += "</li>"
       html += "<li class='disabled'><span>...</span></li>" if prior_pages.min != display_range-1 && current_page != display_range-1
     end
@@ -57,7 +59,7 @@ module SolrHelpers::Pagination
     # prior pages, current page, and next pages
     html += add_paginator_options(prior_pages, aParams)
     html += "<li class='active'>"
-    html += link_to current_page.to_s, to_page(current_page)
+    html += link_to current_page.to_s, to_page(current_page, aParams)
     html += "</li>"
     html += add_paginator_options(next_pages, aParams)
 
@@ -65,7 +67,7 @@ module SolrHelpers::Pagination
     if current_page != total_pages
       html += "<li class='disabled'><span>...</span></li>" if next_pages.max != total_pages-1 && current_page != total_pages-1
       html += "<li>"
-      html += link_to total_pages.to_s, to_page(total_pages)
+      html += link_to total_pages.to_s, to_page(total_pages, aParams)
       html += "</li>"
     end
 
@@ -116,11 +118,12 @@ module SolrHelpers::Pagination
   # to_page
   #   purpose: return the parameters rails will use to send a new request to a different page
   #            essentially want all the same parameters except for the page
-  #   params: page ("3"), params (rails params or hash)
+  #   params: page ("3"), params (hash, NOT rails param)
   #   returns: parameters for new rails request
   #   example:  <%= link_to "Next Page", to_page("5") %>
-  def to_page(page, aParams=params)
-    merged = aParams.merge({:page => page.to_s})
+  def to_page(page, aParams={})
+    new_params = ActionController::Parameters.new(aParams).permit!
+    merged = new_params.merge({:page => page.to_s})
     return merged
   end
 end
