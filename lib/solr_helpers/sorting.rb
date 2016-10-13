@@ -8,7 +8,7 @@ module SolrHelpers::Sorting
   # NOTE: does not use "asc" "desc" which are currently in controllers, maybe that
   #   should change, though?
   def sort(sort_type, aParams=params)
-    new_params = aParams.to_hash.clone
+    new_params = aParams.to_h.clone
     new_params["sort"] = sort_type
     new_params.delete("page")
     new_params.delete("facet.field")
