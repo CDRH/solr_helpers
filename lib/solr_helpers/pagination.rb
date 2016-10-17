@@ -20,7 +20,7 @@ module SolrHelpers::Pagination
   #   params: total_pages (int 12), display_range (int 3), params (rails object)
   #   return: giant blob of html like << 1 ... 4, 5, 6 ... 12 >>
   def paginator(total_pages, display_range=3, aParams=params)
-    new_params = aParams.to_h.clone
+    new_params = aParams.to_unsafe_h.clone
     new_params.delete("facet.field")
     if total_pages && total_pages.to_i > 1
       current_page = new_params["page"] ? new_params["page"].to_i : 1
