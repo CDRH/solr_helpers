@@ -1,5 +1,4 @@
 module SolrHelpers::Faceting
-  include ActionView::Helpers
   extend ActionView::Helpers 
 
 

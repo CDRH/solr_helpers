@@ -1,5 +1,4 @@
 module SolrHelpers::Sorting
-  include ActionView::Helpers
   extend ActionView::Helpers 
 
   # sort

@@ -1,5 +1,4 @@
 module SolrHelpers::Pagination
-  include ActionView::Helpers
   extend ActionView::Helpers
 
   # add_paginator_options
