@@ -80,7 +80,7 @@ module SolrHelpers::Pagination
     html = ""
     html += (current_page == 1) ? "<li class='disabled'>" : "<li>"
     if current_page != 1
-      html += link_to "<span aria-hidden='true'>&laquo;</span>".html_safe, to_page(current_page-1, aParams)
+      html += link_to "<span aria-label='Previous Page (#{current_page-1})'>&laquo;</span>".html_safe, to_page(current_page-1, aParams)
     else
       # use a span instead of a link if it is inactive
       html += "<span><span aria-hidden='true'>&laquo;</span></span>"
@@ -96,7 +96,7 @@ module SolrHelpers::Pagination
     html = ""
     html += (current_page == total_pages) ? "<li class='disabled'>" : "<li>"
     if current_page != total_pages
-      html += link_to "<span aria-hidden='true'>&raquo;</span>".html_safe, to_page(current_page+1, aParams)
+      html += link_to "<span aria-label='Next Page (#{current_page+1})'>&raquo;</span>".html_safe, to_page(current_page+1, aParams)
     else
       html += "<span><span aria-hidden='true'>&raquo;</span></span>"
     end
