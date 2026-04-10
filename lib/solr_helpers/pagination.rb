@@ -23,11 +23,11 @@ module SolrHelpers::Pagination
     new_params.delete("facet.field")
     if total_pages && total_pages.to_i > 1
       current_page = new_params["page"] ? new_params["page"].to_i : 1
-      html = "<nav aria-labelledby='pagination_label'><ul class='pagination'>"
+      html = "<ul class='pagination'>"
       html += page_button_previous(current_page, new_params)
       html += paginator_numbers(total_pages, display_range, new_params)
       html += page_button_next(current_page, total_pages, new_params)
-      html += "</ul></nav>"
+      html += "</ul>"
       return html.html_safe
     end
   end
