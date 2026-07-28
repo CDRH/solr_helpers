@@ -23,11 +23,11 @@ module SolrHelpers::Pagination
     new_params.delete("facet.field")
     if total_pages && total_pages.to_i > 1
       current_page = new_params["page"] ? new_params["page"].to_i : 1
-      html = "<nav><ul class='pagination'>"
+      html = "<ul class='pagination'>"
       html += page_button_previous(current_page, new_params)
       html += paginator_numbers(total_pages, display_range, new_params)
       html += page_button_next(current_page, total_pages, new_params)
-      html += "</ul></nav>"
+      html += "</ul>"
       return html.html_safe
     end
   end
@@ -80,7 +80,7 @@ module SolrHelpers::Pagination
     html = ""
     html += (current_page == 1) ? "<li class='disabled'>" : "<li>"
     if current_page != 1
-      html += link_to "<span aria-hidden='true'>&laquo;</span>".html_safe, to_page(current_page-1, aParams)
+      html += link_to "<span aria-label='Previous Page (#{current_page-1})'>&laquo;</span>".html_safe, to_page(current_page-1, aParams)
     else
       # use a span instead of a link if it is inactive
       html += "<span><span aria-hidden='true'>&laquo;</span></span>"
@@ -96,7 +96,7 @@ module SolrHelpers::Pagination
     html = ""
     html += (current_page == total_pages) ? "<li class='disabled'>" : "<li>"
     if current_page != total_pages
-      html += link_to "<span aria-hidden='true'>&raquo;</span>".html_safe, to_page(current_page+1, aParams)
+      html += link_to "<span aria-label='Next Page (#{current_page+1})'>&raquo;</span>".html_safe, to_page(current_page+1, aParams)
     else
       html += "<span><span aria-hidden='true'>&raquo;</span></span>"
     end
